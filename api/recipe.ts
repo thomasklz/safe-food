@@ -1,7 +1,7 @@
 import { GoogleGenAI, Type } from '@google/genai';
 
 async function generateWithFallback(ai: GoogleGenAI, config: any) {
-  const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.0-flash-lite'];
+  const models = ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash'];
   let lastErr: any = null;
   for (const model of models) {
     try {
@@ -65,7 +65,7 @@ En "nutritionalBenefits", detalla qué nutrientes aporta la receta al cuerpo de 
             safetyPrecautions: {
               type: Type.ARRAY,
               items: { type: Type.STRING },
-              description: 'Precauciones sanitarias strictly durante la preparación de este plato (temperatura interna, utensilios, desinfección, etc.)'
+              description: 'Precauciones sanitarias estrictas durante la preparación de este plato (temperatura interna, utensilios, desinfección, etc.)'
             },
             nutritionalBenefits: {
               type: Type.STRING,
