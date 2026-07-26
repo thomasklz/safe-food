@@ -1,0 +1,8 @@
+{
+  "name": "Remix: SafeFood IA - Inocuidad y Nutrición",
+  "description": "Aplicación de Inteligencia Artificial para el monitoreo inteligente de alimentos, alertas de inocuidad y planificación nutricional segura en el hogar.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
