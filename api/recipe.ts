@@ -25,7 +25,7 @@ En la sección "safetyPrecautions", incluye al menos 3 medidas de inocuidad espe
 En "nutritionalBenefits", detalla qué nutrientes aporta la receta al cuerpo de forma clara.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.0-flash',
       contents: prompt,
       config: {
         responseMimeType: 'application/json',

@@ -348,7 +348,7 @@ export default function App() {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <span className="bg-emerald-100 text-emerald-800 text-xs uppercase px-2.5 py-0.5 rounded-full font-bold font-mono tracking-wider">
-                  Model: Gemini 2.5 Flash
+                  Model: Gemini 2.0 Flash
                 </span>
                 <span className="bg-cyan-100 text-cyan-800 text-[10px] uppercase px-2 py-0.5 rounded-full font-mono font-bold">
                   Ecuador / ALC

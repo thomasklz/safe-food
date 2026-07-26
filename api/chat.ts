@@ -23,7 +23,7 @@ export default async function handler(req: any, res: any) {
     }));
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.0-flash',
       contents: formattedContents,
       config: {
         systemInstruction: `Eres "SafeFood IA", un tutor y asistente científico interactivo de primer nivel experto en Inocuidad Alimentaria (Food Safety) y Nutrición Familiar Doméstica.

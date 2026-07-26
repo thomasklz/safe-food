@@ -27,7 +27,7 @@ ${itemsDescription}
 Brinda un veredicto de inocuidad en formato JSON estricto. Determina cuál es el alimento con mayor prioridad de consumo o riesgo inminente de contaminación/enfermedad transmitida por alimentos (como Salmonella, Listeria monocytogenes, o toxinas fúngicas), explica de manera científica pero entendible el riesgo biológico asociado, y provee 3 recomendaciones inmediatas para el hogar.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.0-flash',
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
