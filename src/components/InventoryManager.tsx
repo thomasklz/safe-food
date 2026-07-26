@@ -211,7 +211,8 @@ export default function InventoryManager({
       });
 
       if (!res.ok) {
-        throw new Error('No se pudo procesar la solicitud con el servidor.');
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || `Error del servidor (código HTTP ${res.status})`);
       }
 
       const data = await res.json();
@@ -219,7 +220,7 @@ export default function InventoryManager({
     } catch (err: any) {
       console.error(err);
       setAnalysisError(
-        'El análisis de IA falló. El servidor podría estar en modo demostración. Puedes seguir vigilando las caducidades manualmente mediante las etiquetas de alerta.'
+        err.message || 'El análisis de IA falló. Verifica la clave API en las variables de entorno de Vercel.'
       );
     } finally {
       setLoadingAnalysis(false);
