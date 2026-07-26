@@ -1,5 +1,19 @@
 import { GoogleGenAI, Type } from '@google/genai';
 
+async function generateWithFallback(ai: GoogleGenAI, config: any) {
+  const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.0-flash-lite'];
+  let lastErr: any = null;
+  for (const model of models) {
+    try {
+      return await ai.models.generateContent({ ...config, model });
+    } catch (err: any) {
+      console.warn(`Model ${model} failed, trying next fallback:`, err.message || err);
+      lastErr = err;
+    }
+  }
+  throw lastErr;
+}
+
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
@@ -24,8 +38,7 @@ Por favor, genera una receta segura, balanceada y deliciosa estructurada en form
 En la sección "safetyPrecautions", incluye al menos 3 medidas de inocuidad específicas relacionadas con estos ingredientes (por ejemplo, temperaturas internas de cocción, desinfección previa o riesgos de contaminación cruzada según el tipo de alimento como carne, pescado, lácteos, etc.).
 En "nutritionalBenefits", detalla qué nutrientes aporta la receta al cuerpo de forma clara.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+    const response = await generateWithFallback(ai, {
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
@@ -52,7 +65,7 @@ En "nutritionalBenefits", detalla qué nutrientes aporta la receta al cuerpo de 
             safetyPrecautions: {
               type: Type.ARRAY,
               items: { type: Type.STRING },
-              description: 'Precauciones sanitarias estrictas durante la preparación de este plato (temperatura interna, utensilios, desinfección, etc.)'
+              description: 'Precauciones sanitarias strictly durante la preparación de este plato (temperatura interna, utensilios, desinfección, etc.)'
             },
             nutritionalBenefits: {
               type: Type.STRING,

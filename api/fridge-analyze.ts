@@ -1,5 +1,19 @@
 import { GoogleGenAI, Type } from '@google/genai';
 
+async function generateWithFallback(ai: GoogleGenAI, config: any) {
+  const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.0-flash-lite'];
+  let lastErr: any = null;
+  for (const model of models) {
+    try {
+      return await ai.models.generateContent({ ...config, model });
+    } catch (err: any) {
+      console.warn(`Model ${model} failed, trying next fallback:`, err.message || err);
+      lastErr = err;
+    }
+  }
+  throw lastErr;
+}
+
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
@@ -26,8 +40,7 @@ ${itemsDescription}
 
 Brinda un veredicto de inocuidad en formato JSON estricto. Determina cuál es el alimento con mayor prioridad de consumo o riesgo inminente de contaminación/enfermedad transmitida por alimentos (como Salmonella, Listeria monocytogenes, o toxinas fúngicas), explica de manera científica pero entendible el riesgo biológico asociado, y provee 3 recomendaciones inmediatas para el hogar.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+    const response = await generateWithFallback(ai, {
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
