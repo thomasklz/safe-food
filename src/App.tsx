@@ -348,14 +348,14 @@ export default function App() {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <span className="bg-emerald-100 text-emerald-800 text-xs uppercase px-2.5 py-0.5 rounded-full font-bold font-mono tracking-wider">
-                  Model: Gemini 3.5 Flash
+                  Model: Gemini 2.5 Flash
                 </span>
                 <span className="bg-cyan-100 text-cyan-800 text-[10px] uppercase px-2 py-0.5 rounded-full font-mono font-bold">
                   Ecuador / ALC
                 </span>
               </div>
               <h2 className="text-2xl font-black text-stone-850 tracking-tight">
-                Plataforma Científica de Inocuidad & Nutrición Infantil
+                Plataforma Científica de Inocuidad & Nutrición
               </h2>
               <p className="text-sm text-stone-600 leading-relaxed max-w-2xl">
                 Combate el desperdicio alimentario, asegura la cadena de frío de tus proteínas y planea un menú nutricional saludable con soporte de IA.
