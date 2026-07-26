@@ -18,3 +18,7 @@ View your app in AI Studio: https://ai.studio/apps/79a47544-64be-48e7-add5-9bcbb
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+---
+*SafeFood IA - Plataforma Científica de Inocuidad & Nutrición*
+
