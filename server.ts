@@ -40,8 +40,10 @@ function getGeminiClient(): GoogleGenAI | null {
 
 // ---------------- API ENDPOINTS -----------------
 
+const apiRouter = express.Router();
+
 // 1. Health & Config endpoint
-app.get('/api/config', (req, res) => {
+apiRouter.get('/config', (req, res) => {
   const isKeyAvailable = !!process.env.GEMINI_API_KEY;
   res.json({
     hasApiKey: isKeyAvailable,
@@ -51,7 +53,7 @@ app.get('/api/config', (req, res) => {
 });
 
 // 2. Interactive Tutor Chat - Educational advice on food safety and household nutrition
-app.post('/api/chat', async (req, res) => {
+apiRouter.post('/chat', async (req, res) => {
   const ai = getGeminiClient();
   if (!ai) {
     return res.status(503).json({
@@ -71,7 +73,7 @@ app.post('/api/chat', async (req, res) => {
     }));
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.5-flash',
+      model: 'gemini-2.5-flash',
       contents: formattedContents,
       config: {
         systemInstruction: `Eres "SafeFood IA", un tutor y asistente científico interactivo de primer nivel experto en Inocuidad Alimentaria (Food Safety) y Nutrición Familiar Doméstica.
@@ -97,7 +99,7 @@ Estilo de Respuesta:
 });
 
 // 3. Smart Safe Recipe Generator - Suggests menus leveraging items about to expire with active hygiene steps
-app.post('/api/recipe', async (req, res) => {
+apiRouter.post('/recipe', async (req, res) => {
   const ai = getGeminiClient();
   if (!ai) {
     return res.status(503).json({
@@ -116,7 +118,7 @@ En la sección "safetyPrecautions", incluye al menos 3 medidas de inocuidad espe
 En "nutritionalBenefits", detalla qué nutrientes aporta la receta al cuerpo de forma clara.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.5-flash',
+      model: 'gemini-2.5-flash',
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
@@ -164,7 +166,7 @@ En "nutritionalBenefits", detalla qué nutrientes aporta la receta al cuerpo de 
 });
 
 // 4. Fridge Spoilage and Risk Analysis - Analyzes whole inventory for hygiene warnings
-app.post('/api/fridge-analyze', async (req, res) => {
+apiRouter.post('/fridge-analyze', async (req, res) => {
   const ai = getGeminiClient();
   if (!ai) {
     return res.status(503).json({ error: 'Clave API de Gemini ausente.' });
@@ -186,7 +188,7 @@ ${itemsDescription}
 Brinda un veredicto de inocuidad en formato JSON estricto. Determina cuál es el alimento con mayor prioridad de consumo o riesgo inminente de contaminación/enfermedad transmitida por alimentos (como Salmonella, Listeria monocytogenes, o toxinas fúngicas), explica de manera científica pero entendible el riesgo biológico asociado, y provee 3 recomendaciones inmediatas para el hogar.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.5-flash',
+      model: 'gemini-2.5-flash',
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
@@ -214,6 +216,10 @@ Brinda un veredicto de inocuidad en formato JSON estricto. Determina cuál es el
     res.status(500).json({ error: error.message || 'Error al analizar almacenamiento de alimentos.' });
   }
 });
+
+// Mount API router under both /api and / so all Vercel function routing matches seamlessly
+app.use('/api', apiRouter);
+app.use('/', apiRouter);
 
 
 // ---------------- HOST SERVING WORKFLOW -----------------
