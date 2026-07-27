@@ -580,9 +580,9 @@ export default function InventoryManager({
   // Food adding states
   const [showAddForm, setShowAddForm] = useState(false);
   const [name, setName] = useState('');
-  const [category, setCategory] = useState<FoodItem['category']>('vegetable');
+  const [category, setCategory] = useState<FoodItem['category']>('leftovers');
   const [location, setLocation] = useState<FoodItem['storageLocation']>('fridge');
-  const defaultStorageOption = getDefaultStorageOption('vegetable');
+  const defaultStorageOption = getDefaultStorageOption('leftovers');
   const [selectedFood, setSelectedFood] = useState(defaultStorageOption?.food || '');
   const [selectedType, setSelectedType] = useState(defaultStorageOption?.type || '');
   const [quantity, setQuantity] = useState('');
@@ -705,7 +705,7 @@ export default function InventoryManager({
   // Set initial expiration date when form opens
   const openForm = () => {
     setShowAddForm(true);
-    handleCategoryChange('vegetable');
+    handleCategoryChange('leftovers');
   };
 
   const handleAddItem = (e: React.FormEvent) => {
@@ -952,14 +952,14 @@ export default function InventoryManager({
                 onChange={(e) => handleCategoryChange(e.target.value as FoodItem['category'])}
                 className="w-full text-sm px-3.5 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white"
               >
-                <option value="vegetable">Vegetales / Hortalizas</option>
-                <option value="meat">Carnes Crudas (Pollo, Res, Cerdo)</option>
-                <option value="fish">Pescados y Mariscos frescos</option>
-                <option value="dairy">Lácteos y Derivados</option>
-                <option value="fruit">Frutas frescas</option>
-                <option value="leftovers">Comida Cocinada / Sobras</option>
-                <option value="grain">Granos y Cereales</option>
-                <option value="other">Otros / Condimentos</option>
+                <option value="leftovers">Preparados y Sobras (PDF)</option>
+                <option value="meat">Carnes, Embutidos, Jamón y Aves (PDF)</option>
+                <option value="fish">Pescados y Mariscos (PDF)</option>
+                <option value="dairy">Huevos y Preparaciones con Huevo (PDF)</option>
+                <option value="vegetable">Vegetales / Hortalizas (sin filas en PDF)</option>
+                <option value="fruit">Frutas frescas (sin filas en PDF)</option>
+                <option value="grain">Granos y Cereales (sin filas en PDF)</option>
+                <option value="other">Otros / Condimentos (sin filas en PDF)</option>
               </select>
             </div>
 
