@@ -1,7 +1,7 @@
 import { GoogleGenAI, Type } from '@google/genai';
 
 async function generateWithFallback(ai: GoogleGenAI, config: any) {
-  const models = ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash'];
+  const models = ['gemini-1.5-flash', 'gemini-1.5-pro'];
   let lastErr: any = null;
   for (const model of models) {
     try {
