@@ -22,57 +22,340 @@ interface InventoryManagerProps {
   setActivityLogs: React.Dispatch<React.SetStateAction<ActivityLog[]>>;
 }
 
-const CATEGORY_SHELF_LIFE: Record<FoodItem['category'], {
+type ShelfLifeRecommendation = {
   days: number;
   range: string;
   source: string;
-}> = {
-  meat: {
-    days: 2,
-    range: '1 a 2 días',
-    source: 'FoodSafety.gov: aves frescas, salchicha cruda, carne molida y mezclas crudas.'
+};
+
+type FoodStorageOption = {
+  category: FoodItem['category'];
+  food: string;
+  type: string;
+  fridge: ShelfLifeRecommendation;
+  freezer?: ShelfLifeRecommendation;
+};
+
+const FOOD_STORAGE_OPTIONS: FoodStorageOption[] = [
+  {
+    category: 'leftovers',
+    food: 'Ensalada',
+    type: 'Ensaladas de huevo, pollo, jamón, atún y macarrones',
+    fridge: { days: 4, range: '3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 1, range: 'No se congela bien', source: 'FoodSafety.gov: congelador no recomendado para calidad.' }
   },
-  fish: {
-    days: 3,
-    range: '1 a 3 días',
-    source: 'FoodSafety.gov: peces de aleta frescos.'
+  {
+    category: 'meat',
+    food: 'Perritos calientes',
+    type: 'Paquete abierto',
+    fridge: { days: 7, range: '1 semana', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
   },
-  leftovers: {
-    days: 4,
-    range: '3 a 4 días',
-    source: 'FoodSafety.gov: sobras, carne o aves cocidas, sopas y guisos.'
+  {
+    category: 'meat',
+    food: 'Perritos calientes',
+    type: 'Paquete sin abrir',
+    fridge: { days: 14, range: '2 semanas', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
   },
-  dairy: {
-    days: 7,
-    range: '1 semana',
-    source: 'Referencia preventiva: el PDF incluye huevos; para lacteos se conserva el criterio local de 1 semana.'
+  {
+    category: 'meat',
+    food: 'Tocino y salchicha',
+    type: 'Tocino',
+    fridge: { days: 7, range: '1 semana', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 mes', source: 'FoodSafety.gov: congelador.' }
   },
-  vegetable: {
-    days: 7,
-    range: '7 días',
-    source: 'Estimación preventiva local; el PDF no incluye frutas y vegetales frescos como categoría general.'
+  {
+    category: 'meat',
+    food: 'Tocino y salchicha',
+    type: 'Salchicha cruda de pollo, pavo, cerdo o ternera',
+    fridge: { days: 2, range: '1 a 2 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
   },
-  fruit: {
-    days: 7,
-    range: '7 días',
-    source: 'Estimación preventiva local; el PDF no incluye frutas y vegetales frescos como categoría general.'
+  {
+    category: 'meat',
+    food: 'Hamburguesa, carne picada y carne picada de ave',
+    type: 'Carne molida de res, pavo, pollo, ternera, cerdo, cordero y mezclas',
+    fridge: { days: 2, range: '1 a 2 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 90, range: '3 a 4 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
   },
-  grain: {
-    days: 14,
-    range: '14 días',
-    source: 'Estimación preventiva local; el PDF no incluye granos y cereales como categoría refrigerada general.'
+  {
+    category: 'meat',
+    food: 'Carne fresca de res, ternera, cordero y cerdo',
+    type: 'Filetes, chuletas o asados',
+    fridge: { days: 5, range: '3 a 5 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 120, range: '4 a 12 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
   },
-  other: {
-    days: 5,
-    range: '3 a 5 días',
-    source: 'FoodSafety.gov: referencia preventiva basada en ensaladas, jamón en rodajas y alimentos preparados.'
+  {
+    category: 'meat',
+    food: 'Aves de corral frescas',
+    type: 'Pollo o pavo entero o en trozos',
+    fridge: { days: 2, range: '1 a 2 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 270, range: '9 meses a 1 año', source: 'FoodSafety.gov: congelador; trozos 9 meses, entero 1 año.' }
+  },
+  {
+    category: 'fish',
+    food: 'Peces de aleta',
+    type: 'Pescados grasos o magros frescos',
+    fridge: { days: 3, range: '1 a 3 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 60, range: '2 a 8 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'fish',
+    food: 'Mariscos',
+    type: 'Carne de cangrejo o langosta fresca',
+    fridge: { days: 4, range: '2 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 60, range: '2 a 4 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'fish',
+    food: 'Mariscos',
+    type: 'Camarones o cangrejos de río',
+    fridge: { days: 5, range: '3 a 5 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 180, range: '6 a 18 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Huevos crudos con cáscara',
+    fridge: { days: 35, range: '3 a 5 semanas', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 1, range: 'No congelar con cáscara', source: 'FoodSafety.gov: batir yemas y claras antes de congelar.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Huevos duros',
+    fridge: { days: 7, range: '1 semana', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 1, range: 'No congelar', source: 'FoodSafety.gov: congelador no recomendado.' }
+  },
+  {
+    category: 'leftovers',
+    food: 'Sopas y guisos',
+    type: 'Se añaden verduras o carne',
+    fridge: { days: 4, range: '3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 60, range: '2 a 3 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'leftovers',
+    food: 'Sobras',
+    type: 'Carne o aves cocidas',
+    fridge: { days: 4, range: '3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 60, range: '2 a 6 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'leftovers',
+    food: 'Sobras',
+    type: 'Nuggets, hamburguesas de pollo o pizza',
+    fridge: { days: 4, range: '3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 3 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'vegetable',
+    food: 'Vegetales / Hortalizas',
+    type: 'Frescos',
+    fridge: { days: 7, range: '7 días', source: 'Estimación preventiva local; el PDF no incluye esta categoría general.' },
+    freezer: { days: 240, range: '8 meses', source: 'Estimación preventiva local para congelador.' }
+  },
+  {
+    category: 'fruit',
+    food: 'Frutas frescas',
+    type: 'Frescas',
+    fridge: { days: 7, range: '7 días', source: 'Estimación preventiva local; el PDF no incluye esta categoría general.' },
+    freezer: { days: 240, range: '8 meses', source: 'Estimación preventiva local para congelador.' }
+  },
+  {
+    category: 'grain',
+    food: 'Granos y cereales',
+    type: 'Secos o cocidos',
+    fridge: { days: 14, range: '14 días', source: 'Estimación preventiva local; el PDF no incluye esta categoría general.' },
+    freezer: { days: 90, range: '3 meses', source: 'Estimación preventiva local para congelador.' }
+  },
+  {
+    category: 'other',
+    food: 'Otros / Condimentos',
+    type: 'Preparados o abiertos',
+    fridge: { days: 5, range: '3 a 5 días', source: 'FoodSafety.gov: referencia preventiva de alimentos preparados.' },
+    freezer: { days: 60, range: '1 a 2 meses', source: 'FoodSafety.gov: referencia preventiva de alimentos preparados.' }
+  }
+];
+
+const SHELF_LIFE_BY_LOCATION: Record<FoodItem['storageLocation'], Record<FoodItem['category'], ShelfLifeRecommendation>> = {
+  fridge: {
+    meat: {
+      days: 2,
+      range: '1 a 2 días',
+      source: 'FoodSafety.gov: refrigerador para aves frescas, salchicha cruda, carne molida y mezclas crudas.'
+    },
+    fish: {
+      days: 3,
+      range: '1 a 3 días',
+      source: 'FoodSafety.gov: refrigerador para peces de aleta frescos.'
+    },
+    leftovers: {
+      days: 4,
+      range: '3 a 4 días',
+      source: 'FoodSafety.gov: refrigerador para sobras, carne o aves cocidas, sopas y guisos.'
+    },
+    dairy: {
+      days: 7,
+      range: '1 semana',
+      source: 'Referencia preventiva: el PDF incluye huevos; para lácteos se conserva el criterio local de 1 semana.'
+    },
+    vegetable: {
+      days: 7,
+      range: '7 días',
+      source: 'Estimación preventiva local; el PDF no incluye frutas y vegetales frescos como categoría general.'
+    },
+    fruit: {
+      days: 7,
+      range: '7 días',
+      source: 'Estimación preventiva local; el PDF no incluye frutas y vegetales frescos como categoría general.'
+    },
+    grain: {
+      days: 14,
+      range: '14 días',
+      source: 'Estimación preventiva local; el PDF no incluye granos y cereales como categoría refrigerada general.'
+    },
+    other: {
+      days: 5,
+      range: '3 a 5 días',
+      source: 'FoodSafety.gov: refrigerador para ensaladas, jamón en rodajas y alimentos preparados.'
+    }
+  },
+  freezer: {
+    meat: {
+      days: 90,
+      range: '3 a 4 meses',
+      source: 'FoodSafety.gov: congelador para carne molida; se usa el extremo conservador.'
+    },
+    fish: {
+      days: 90,
+      range: '2 a 3 meses',
+      source: 'FoodSafety.gov: congelador para pescados grasos; se usa el extremo conservador.'
+    },
+    leftovers: {
+      days: 60,
+      range: '1 a 3 meses',
+      source: 'FoodSafety.gov: congelador para pizza, nuggets, sopas, guisos y sobras cocidas.'
+    },
+    dairy: {
+      days: 30,
+      range: '1 mes',
+      source: 'Estimación preventiva local; muchos lácteos no congelan bien y el PDF no da una categoría general.'
+    },
+    vegetable: {
+      days: 240,
+      range: '8 meses',
+      source: 'Estimación preventiva local; el PDF no incluye vegetales frescos como categoría general.'
+    },
+    fruit: {
+      days: 240,
+      range: '8 meses',
+      source: 'Estimación preventiva local; el PDF no incluye frutas frescas como categoría general.'
+    },
+    grain: {
+      days: 90,
+      range: '3 meses',
+      source: 'Estimación preventiva local; el PDF no incluye granos y cereales como categoría congelada general.'
+    },
+    other: {
+      days: 60,
+      range: '1 a 2 meses',
+      source: 'FoodSafety.gov: congelador para alimentos preparados, fiambres y productos similares.'
+    }
+  },
+  pantry: {
+    meat: {
+      days: 1,
+      range: 'usar el mismo día',
+      source: 'No recomendado en despensa para carnes perecederas; el PDF solo cubre almacenamiento en frío.'
+    },
+    fish: {
+      days: 1,
+      range: 'usar el mismo día',
+      source: 'No recomendado en despensa para pescados o mariscos frescos; el PDF solo cubre almacenamiento en frío.'
+    },
+    leftovers: {
+      days: 1,
+      range: 'usar el mismo día',
+      source: 'No recomendado en despensa para comida cocinada; mantener refrigerada o congelada.'
+    },
+    dairy: {
+      days: 1,
+      range: 'usar el mismo día',
+      source: 'No recomendado en despensa para lácteos refrigerados; revisar siempre la etiqueta.'
+    },
+    vegetable: {
+      days: 3,
+      range: '3 días',
+      source: 'Estimación preventiva local para vegetales en despensa fresca y ventilada.'
+    },
+    fruit: {
+      days: 5,
+      range: '5 días',
+      source: 'Estimación preventiva local para frutas en despensa fresca y ventilada.'
+    },
+    grain: {
+      days: 180,
+      range: '6 meses',
+      source: 'Estimación preventiva local para granos secos en envase cerrado.'
+    },
+    other: {
+      days: 30,
+      range: '1 mes',
+      source: 'Estimación preventiva local; revisar etiqueta y condición del envase.'
+    }
   }
 };
+
+function getShelfLifeRecommendation(
+  cat: FoodItem['category'],
+  storageLocation: FoodItem['storageLocation'],
+  option?: FoodStorageOption
+) {
+  if (option && storageLocation === 'fridge') return option.fridge;
+  if (option && storageLocation === 'freezer' && option.freezer) return option.freezer;
+  return SHELF_LIFE_BY_LOCATION[storageLocation][cat];
+}
+
+function getFoodOptions(cat: FoodItem['category']) {
+  return Array.from(new Set(
+    FOOD_STORAGE_OPTIONS
+      .filter((option) => option.category === cat)
+      .map((option) => option.food)
+  ));
+}
+
+function getTypeOptions(cat: FoodItem['category'], food: string) {
+  return FOOD_STORAGE_OPTIONS.filter(
+    (option) => option.category === cat && option.food === food
+  );
+}
+
+function getSelectedStorageOption(cat: FoodItem['category'], food: string, type: string) {
+  return FOOD_STORAGE_OPTIONS.find(
+    (option) => option.category === cat && option.food === food && option.type === type
+  );
+}
+
+function getDefaultStorageOption(cat: FoodItem['category']) {
+  return FOOD_STORAGE_OPTIONS.find((option) => option.category === cat);
+}
 
 function getExpiryDateFromShelfLife(storageDate: string, days: number) {
   const base = new Date(storageDate);
   base.setDate(base.getDate() + days);
   return base.toISOString().split('T')[0];
+}
+
+function getShelfLifeHint(days: number, storageLocation: FoodItem['storageLocation']) {
+  if (storageLocation === 'freezer') return 'Congelación: conserva calidad por más tiempo si se mantiene a -18°C o menos.';
+  if (storageLocation === 'pantry') return days <= 1
+    ? 'Despensa no recomendada para este alimento perecedero.'
+    : 'Despensa: conservar en lugar fresco, seco y ventilado.';
+  if (days <= 2) return 'Perecedero rápido (carnes, aves, pescados o mariscos).';
+  if (days <= 5) return 'Durabilidad media (sobras, preparados o alimentos abiertos).';
+  return 'Durabilidad alta bajo conservación adecuada.';
 }
 
 export default function InventoryManager({
@@ -89,6 +372,9 @@ export default function InventoryManager({
   const [name, setName] = useState('');
   const [category, setCategory] = useState<FoodItem['category']>('vegetable');
   const [location, setLocation] = useState<FoodItem['storageLocation']>('fridge');
+  const defaultStorageOption = getDefaultStorageOption('vegetable');
+  const [selectedFood, setSelectedFood] = useState(defaultStorageOption?.food || '');
+  const [selectedType, setSelectedType] = useState(defaultStorageOption?.type || '');
   const [quantity, setQuantity] = useState('');
   const [storageDate, setStorageDate] = useState(new Date().toISOString().split('T')[0]);
   const [perecidad, setPerecidad] = useState<number>(5); // Default shelf-life in days
@@ -108,7 +394,59 @@ export default function InventoryManager({
   // Auto-estimate expiration based on category
   const handleCategoryChange = (cat: FoodItem['category']) => {
     setCategory(cat);
-    const offsetDays = CATEGORY_SHELF_LIFE[cat].days;
+    const nextOption = getDefaultStorageOption(cat);
+    const nextFood = nextOption?.food || '';
+    const nextType = nextOption?.type || '';
+    setSelectedFood(nextFood);
+    setSelectedType(nextType);
+    const offsetDays = getShelfLifeRecommendation(cat, location, nextOption).days;
+
+    setPerecidad(offsetDays);
+    if (!name.trim() && nextFood) {
+      setName(nextFood);
+    }
+    try {
+      setExpiryDate(getExpiryDateFromShelfLife(storageDate, offsetDays));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleLocationChange = (storageLocation: FoodItem['storageLocation']) => {
+    setLocation(storageLocation);
+    const selectedOption = getSelectedStorageOption(category, selectedFood, selectedType);
+    const offsetDays = getShelfLifeRecommendation(category, storageLocation, selectedOption).days;
+
+    setPerecidad(offsetDays);
+    try {
+      setExpiryDate(getExpiryDateFromShelfLife(storageDate, offsetDays));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleFoodChange = (food: string) => {
+    setSelectedFood(food);
+    const nextOption = getTypeOptions(category, food)[0];
+    const nextType = nextOption?.type || '';
+    setSelectedType(nextType);
+    const offsetDays = getShelfLifeRecommendation(category, location, nextOption).days;
+
+    setPerecidad(offsetDays);
+    if (!name.trim()) {
+      setName(food);
+    }
+    try {
+      setExpiryDate(getExpiryDateFromShelfLife(storageDate, offsetDays));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleTypeChange = (type: string) => {
+    setSelectedType(type);
+    const selectedOption = getSelectedStorageOption(category, selectedFood, type);
+    const offsetDays = getShelfLifeRecommendation(category, location, selectedOption).days;
 
     setPerecidad(offsetDays);
     try {
@@ -173,6 +511,8 @@ export default function InventoryManager({
       storageDate: storageDate || new Date().toISOString().split('T')[0],
       expiryDate,
       notes: notes.trim(),
+      foodSafetyFood: selectedFood,
+      foodSafetyType: selectedType,
       perecidad: perecidad
     };
 
@@ -194,6 +534,9 @@ export default function InventoryManager({
 
     // Reset form
     setName('');
+    const nextOption = getDefaultStorageOption(category);
+    setSelectedFood(nextOption?.food || '');
+    setSelectedType(nextOption?.type || '');
     setQuantity('');
     setNotes('');
     setShowAddForm(false);
@@ -265,6 +608,11 @@ export default function InventoryManager({
     if (fridgeTemp <= 6) return 'text-amber-600 bg-amber-50 border-amber-200';
     return 'text-rose-600 bg-rose-50 border-rose-200 animate-pulse';
   };
+
+  const foodOptions = getFoodOptions(category);
+  const typeOptions = getTypeOptions(category, selectedFood);
+  const selectedStorageOption = getSelectedStorageOption(category, selectedFood, selectedType);
+  const currentShelfLifeRecommendation = getShelfLifeRecommendation(category, location, selectedStorageOption);
 
   return (
     <div className="space-y-8" id="inventory-manager-view">
@@ -404,6 +752,34 @@ export default function InventoryManager({
               </select>
             </div>
 
+            {/* FoodSafety.gov Food */}
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-stone-700 block text-left">Alimento</label>
+              <select
+                value={selectedFood}
+                onChange={(e) => handleFoodChange(e.target.value)}
+                className="w-full text-sm px-3.5 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white"
+              >
+                {foodOptions.map((food) => (
+                  <option key={food} value={food}>{food}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* FoodSafety.gov Type */}
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-stone-700 block text-left">Tipo</label>
+              <select
+                value={selectedType}
+                onChange={(e) => handleTypeChange(e.target.value)}
+                className="w-full text-sm px-3.5 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white"
+              >
+                {typeOptions.map((option) => (
+                  <option key={`${option.food}-${option.type}`} value={option.type}>{option.type}</option>
+                ))}
+              </select>
+            </div>
+
             {/* Quantity */}
             <div className="space-y-1">
               <label className="text-xs font-semibold text-stone-700 block text-left">Cantidad / Peso</label>
@@ -421,7 +797,7 @@ export default function InventoryManager({
               <label className="text-xs font-semibold text-stone-700 block text-left">Ubicación</label>
               <select
                 value={location}
-                onChange={(e) => setLocation(e.target.value as FoodItem['storageLocation'])}
+                onChange={(e) => handleLocationChange(e.target.value as FoodItem['storageLocation'])}
                 className="w-full text-sm px-3.5 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white"
               >
                 <option value="fridge">Refrigerador (Nevera)</option>
@@ -453,7 +829,7 @@ export default function InventoryManager({
                 <input
                   type="range"
                   min="1"
-                  max="30"
+                  max="365"
                   value={perecidad}
                   onChange={(e) => handlePerecidadChange(parseInt(e.target.value))}
                   className="w-full accent-emerald-600 h-1.5 bg-stone-100 rounded-lg appearance-none cursor-pointer"
@@ -468,10 +844,10 @@ export default function InventoryManager({
                 />
               </div>
               <p className="text-[10px] text-stone-400 italic">
-                {perecidad <= 2 ? '⚠️ Perecedero rápido (Carnes/Pescado)' : perecidad <= 5 ? '🕒 Durabilidad media (Sobras/Lácteos)' : '🌱 Durabilidad alta (Verduras/Granos)'}
+                {getShelfLifeHint(perecidad, location)}
               </p>
               <p className="text-[10px] text-stone-500 leading-snug">
-                Referencia: {CATEGORY_SHELF_LIFE[category].range}. {CATEGORY_SHELF_LIFE[category].source}
+                Referencia: {currentShelfLifeRecommendation.range}. {currentShelfLifeRecommendation.source}
               </p>
             </div>
 
