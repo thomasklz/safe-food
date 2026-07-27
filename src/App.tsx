@@ -1111,6 +1111,127 @@ export default function App() {
                 </div>
               </div>
             )}
+
+            {/* TAB: MANUAL DE USO */}
+            {activeTab === 'manual' && (
+              <div className="bg-white border border-[#E5EADF] rounded-[24px] p-6 shadow-xs hover:border-[#A5D6A7] transition-all space-y-6" id="manual-uso-tab-container">
+                <div className="border-b border-stone-100 pb-4">
+                  <h2 className="text-2xl font-extrabold text-stone-850 tracking-tight flex items-center gap-2">
+                    <span className="bg-emerald-100 text-emerald-800 p-1.5 rounded-lg flex items-center justify-center">
+                      <BookOpen className="h-5 w-5" />
+                    </span>
+                    Manual de Uso de SafeFood IA
+                  </h2>
+                  <p className="text-sm text-stone-500 leading-relaxed mt-1">
+                    Guía práctica para registrar alimentos, controlar caducidad, consultar recomendaciones y usar la IA de inocuidad en el hogar.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 space-y-3">
+                    <h3 className="text-sm font-bold text-emerald-900 flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4" />
+                      Primeros pasos
+                    </h3>
+                    <ol className="list-decimal pl-5 text-xs text-stone-700 space-y-2 leading-relaxed">
+                      <li>Entra a <strong>Nevera Inteligente</strong>.</li>
+                      <li>Presiona <strong>Registrar Alimento</strong>.</li>
+                      <li>Escribe el nombre, elige categoría, cantidad, ubicación y fecha de almacenamiento.</li>
+                      <li>Revisa los <strong>Días de Perecidad</strong> y la <strong>Fecha Estimada de Caducidad</strong>.</li>
+                      <li>Presiona <strong>Confirmar Registro</strong>.</li>
+                    </ol>
+                  </div>
+
+                  <div className="bg-cyan-50 border border-cyan-100 rounded-2xl p-5 space-y-3">
+                    <h3 className="text-sm font-bold text-cyan-900 flex items-center gap-2">
+                      <ThermometerSun className="h-4 w-4" />
+                      Control de temperatura
+                    </h3>
+                    <p className="text-xs text-stone-700 leading-relaxed">
+                      Usa el simulador de temperatura para ver cómo cambia el riesgo sanitario. El refrigerador debe mantenerse idealmente entre <strong>2°C y 4°C</strong>. Si supera ese rango, la app mostrará alerta de cadena de frío.
+                    </p>
+                    <p className="text-[11px] text-cyan-800 bg-white/70 border border-cyan-100 rounded-xl p-3">
+                      Carnes, pescados y sobras son más sensibles a fallas de refrigeración.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="border border-stone-200 rounded-2xl p-4 space-y-2 bg-stone-50">
+                    <h4 className="text-xs font-bold text-stone-800 uppercase tracking-wider">Nevera Inteligente</h4>
+                    <p className="text-xs text-stone-600 leading-relaxed">
+                      Registra alimentos, visualiza fechas de caducidad, elimina alimentos aprovechados o desperdiciados y ejecuta el análisis de inocuidad IA.
+                    </p>
+                  </div>
+
+                  <div className="border border-stone-200 rounded-2xl p-4 space-y-2 bg-stone-50">
+                    <h4 className="text-xs font-bold text-stone-800 uppercase tracking-wider">Consulta por Alimento</h4>
+                    <p className="text-xs text-stone-600 leading-relaxed">
+                      Busca alimentos específicos para revisar temperaturas de cocción, tiempos de refrigeración, congelación y recomendaciones preventivas.
+                    </p>
+                  </div>
+
+                  <div className="border border-stone-200 rounded-2xl p-4 space-y-2 bg-stone-50">
+                    <h4 className="text-xs font-bold text-stone-800 uppercase tracking-wider">Recetas</h4>
+                    <p className="text-xs text-stone-600 leading-relaxed">
+                      Selecciona alimentos próximos a caducar y genera una receta segura con precauciones de higiene, cocción y almacenamiento.
+                    </p>
+                  </div>
+
+                  <div className="border border-stone-200 rounded-2xl p-4 space-y-2 bg-stone-50">
+                    <h4 className="text-xs font-bold text-stone-800 uppercase tracking-wider">Tutor IA</h4>
+                    <p className="text-xs text-stone-600 leading-relaxed">
+                      Haz preguntas sobre contaminación cruzada, manipulación, temperaturas seguras, limpieza, refrigeración o descarte.
+                    </p>
+                  </div>
+
+                  <div className="border border-stone-200 rounded-2xl p-4 space-y-2 bg-stone-50">
+                    <h4 className="text-xs font-bold text-stone-800 uppercase tracking-wider">Auditoría</h4>
+                    <p className="text-xs text-stone-600 leading-relaxed">
+                      Responde preguntas sobre hábitos del hogar para obtener un puntaje preventivo y recomendaciones de mejora.
+                    </p>
+                  </div>
+
+                  <div className="border border-stone-200 rounded-2xl p-4 space-y-2 bg-stone-50">
+                    <h4 className="text-xs font-bold text-stone-800 uppercase tracking-wider">Caso de Estudio</h4>
+                    <p className="text-xs text-stone-600 leading-relaxed">
+                      Revisa el fundamento del proyecto, sus objetivos y cómo la IA ayuda a reducir desperdicio y riesgos sanitarios.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-stone-900 text-white rounded-2xl p-5 space-y-3">
+                  <h3 className="text-sm font-bold flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4 text-amber-300" />
+                    Cómo interpretar las alertas
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                    <div className="bg-stone-800 border border-stone-700 rounded-xl p-3">
+                      <span className="font-bold text-emerald-300 block mb-1">Seguro</span>
+                      El alimento mantiene días disponibles dentro del rango estimado.
+                    </div>
+                    <div className="bg-stone-800 border border-stone-700 rounded-xl p-3">
+                      <span className="font-bold text-amber-300 block mb-1">Próximo a vencer</span>
+                      Conviene consumirlo pronto o usarlo en una receta de aprovechamiento.
+                    </div>
+                    <div className="bg-stone-800 border border-stone-700 rounded-xl p-3">
+                      <span className="font-bold text-rose-300 block mb-1">Riesgo crítico</span>
+                      Evalúa descarte seguro, especialmente si hubo mala refrigeración, olor extraño o textura anormal.
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-amber-50 border border-amber-100 rounded-2xl p-5 space-y-2">
+                  <h3 className="text-sm font-bold text-amber-900 flex items-center gap-2">
+                    <HelpCircle className="h-4 w-4" />
+                    Si la IA no responde
+                  </h3>
+                  <p className="text-xs text-stone-700 leading-relaxed">
+                    La app sigue funcionando con cálculo local de caducidad, inventario, temperatura y bitácora. Si aparece un aviso de IA temporalmente no disponible, revisa la conexión, la variable <strong>GEMINI_API_KEY</strong> en Vercel y el modelo configurado.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* RIGHT 4 COLUMNS: THE COMPLEMENTARY BENTO BAR IN REAL-TIME */}

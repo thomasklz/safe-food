@@ -383,7 +383,6 @@ export default function InventoryManager({
     return 'text-rose-600 bg-rose-50 border-rose-200 animate-pulse';
   };
 
-  const currentShelfLifeRecommendation = getShelfLifeRecommendation(category, location);
 
   return (
     <div className="space-y-8" id="inventory-manager-view">
@@ -588,9 +587,6 @@ export default function InventoryManager({
               </div>
               <p className="text-[10px] text-stone-400 italic">
                 {getShelfLifeHint(perecidad, location)}
-              </p>
-              <p className="text-[10px] text-stone-500 leading-snug">
-                Referencia: {currentShelfLifeRecommendation.range}. {currentShelfLifeRecommendation.source}
               </p>
             </div>
 

@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { ShieldCheck, Snowflake, ChefHat, MessageSquareCode, BarChart3, ThermometerSun, BookOpen, SearchCheck } from 'lucide-react';
+import { ShieldCheck, Snowflake, ChefHat, MessageSquareCode, BarChart3, ThermometerSun, BookOpen, SearchCheck, HelpCircle } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: string;
@@ -21,6 +21,7 @@ export default function Navbar({ activeTab, setActiveTab, isColdChainOk, hasApiK
     { id: 'tutor', label: 'Tutor de Inocuidad IA', icon: MessageSquareCode },
     { id: 'audit', label: 'Auditoría e Impacto', icon: BarChart3 },
     { id: 'study', label: 'Caso de Estudio', icon: BookOpen },
+    { id: 'manual', label: 'Manual de Uso', icon: HelpCircle },
   ];
 
   return (
