@@ -12,8 +12,6 @@ export interface FoodItem {
   storageLocation: 'fridge' | 'freezer' | 'pantry';
   quantity: string;
   notes?: string;
-  foodSafetyFood?: string;
-  foodSafetyType?: string;
   isCustomExpiry?: boolean;
   perecidad?: number; // Days of durability / shelflife
 }
