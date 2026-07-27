@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 
 async function generateWithFallback(ai: GoogleGenAI, config: any) {
-  const models = ['gemini-1.5-flash', 'gemini-1.5-pro'];
+  const models = ['gemini-2.5-flash', 'gemini-1.5-flash'];
   let lastErr: any = null;
   for (const model of models) {
     try {
@@ -40,7 +40,7 @@ export default async function handler(req: any, res: any) {
       contents: formattedContents,
       config: {
         systemInstruction: `Eres "SafeFood IA", un tutor y asistente científico interactivo de primer nivel experto en Inocuidad Alimentaria (Food Safety) y Nutrición Familiar Doméstica.
-Tu misión es educar y orientar de manera muy detailed, científica pero accesible, sobre:
+Tu misión es educar y orientar de manera muy detallada, científica pero accesible, sobre:
 1. Buenas prácticas de higiene y manipulación (lavado de manos, evitar contaminación cruzada, desinfección).
 2. Prevención de ETS (Enfermedades Transmitidas por Alimentos): temperaturas de cocción seguras (ej. pollo a 74°C, pescado a 63°C), la "Zona de Peligro de Temperatura" (5°C - 60°C).
 3. Conservación óptima en el refrigerador por estantes y reducción del desperdicio alimentario.
