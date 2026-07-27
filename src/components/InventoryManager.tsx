@@ -211,7 +211,10 @@ export default function InventoryManager({
       });
 
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
+        const contentType = res.headers.get('content-type') || '';
+        const errorData = contentType.includes('application/json')
+          ? await res.json().catch(() => ({}))
+          : { error: await res.text().catch(() => '') };
         throw new Error(errorData.error || `Error del servidor (código HTTP ${res.status})`);
       }
 

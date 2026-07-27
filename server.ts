@@ -7,7 +7,7 @@ import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { Type } from '@google/genai';
-import { createGeminiClient, generateWithFallback } from './api/gemini';
+import { createGeminiClient, generateWithFallback } from './lib/gemini';
 
 const app = express();
 app.use(express.json());
