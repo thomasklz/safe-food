@@ -46,6 +46,20 @@ const FOOD_STORAGE_OPTIONS: FoodStorageOption[] = [
   },
   {
     category: 'meat',
+    food: 'Carne enlatada',
+    type: 'Paquete abierto o lonchas de charcutería',
+    fridge: { days: 5, range: '3 a 5 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'meat',
+    food: 'Carne enlatada',
+    type: 'Paquete sin abrir',
+    fridge: { days: 14, range: '2 semanas', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'meat',
     food: 'Perritos calientes',
     type: 'Paquete abierto',
     fridge: { days: 7, range: '1 semana', source: 'FoodSafety.gov: refrigerador.' },
@@ -74,6 +88,20 @@ const FOOD_STORAGE_OPTIONS: FoodStorageOption[] = [
   },
   {
     category: 'meat',
+    food: 'Tocino y salchicha',
+    type: 'Salchicha completamente cocida de pollo, pavo, cerdo o ternera',
+    fridge: { days: 7, range: '1 semana', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'meat',
+    food: 'Tocino y salchicha',
+    type: 'Salchicha comprada congelada',
+    fridge: { days: 4, range: 'Después de cocinar, 3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses a partir de la fecha de compra', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'meat',
     food: 'Hamburguesa, carne picada y carne picada de ave',
     type: 'Carne molida de res, pavo, pollo, ternera, cerdo, cordero y mezclas',
     fridge: { days: 2, range: '1 a 2 días', source: 'FoodSafety.gov: refrigerador.' },
@@ -88,17 +116,108 @@ const FOOD_STORAGE_OPTIONS: FoodStorageOption[] = [
   },
   {
     category: 'meat',
+    food: 'Jamón',
+    type: 'Fresco, sin curar, sin cocinar',
+    fridge: { days: 5, range: '3 a 5 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 180, range: '6 meses', source: 'FoodSafety.gov: congelador.' }
+  },
+  {
+    category: 'meat',
+    food: 'Jamón',
+    type: 'Fresco, sin curar, cocinado',
+    fridge: { days: 4, range: '3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 90, range: '3 a 4 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'meat',
+    food: 'Jamón',
+    type: 'Curado, cocinado antes de comer, crudo',
+    fridge: { days: 7, range: '5 a 7 días o fecha de caducidad', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 90, range: '3 a 4 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'meat',
+    food: 'Jamón',
+    type: 'Completamente cocinado, envasado al vacío en fábrica, sin abrir',
+    fridge: { days: 14, range: '2 semanas o fecha de caducidad', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'meat',
+    food: 'Jamón',
+    type: 'Cocido, envasado al vacío, entero',
+    fridge: { days: 7, range: '1 semana', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'meat',
+    food: 'Jamón',
+    type: 'Cocido, envasado, en rodajas, mitades o cortado en espiral',
+    fridge: { days: 5, range: '3 a 5 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'meat',
+    food: 'Jamón',
+    type: 'Jamón serrano, cocinado',
+    fridge: { days: 7, range: '1 semana', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 mes', source: 'FoodSafety.gov: congelador.' }
+  },
+  {
+    category: 'meat',
+    food: 'Jamón',
+    type: 'Enlatado, mantener refrigerado, sin abrir',
+    fridge: { days: 180, range: '6 a 9 meses', source: 'FoodSafety.gov: refrigerador; se usa el extremo conservador.' },
+    freezer: { days: 1, range: 'No congelar', source: 'FoodSafety.gov: congelador no recomendado.' }
+  },
+  {
+    category: 'meat',
+    food: 'Jamón',
+    type: 'Enlatado, de larga duración, abierto',
+    fridge: { days: 4, range: '3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'meat',
+    food: 'Jamón',
+    type: 'Prosciutto, jamón de Parma o jamón serrano seco, cortado en lonchas',
+    fridge: { days: 60, range: '2 a 3 meses', source: 'FoodSafety.gov: refrigerador; se usa el extremo conservador.' },
+    freezer: { days: 30, range: '1 mes', source: 'FoodSafety.gov: congelador.' }
+  },
+  {
+    category: 'meat',
     food: 'Aves de corral frescas',
-    type: 'Pollo o pavo entero o en trozos',
+    type: 'Pollo o pavo, entero',
     fridge: { days: 2, range: '1 a 2 días', source: 'FoodSafety.gov: refrigerador.' },
-    freezer: { days: 270, range: '9 meses a 1 año', source: 'FoodSafety.gov: congelador; trozos 9 meses, entero 1 año.' }
+    freezer: { days: 365, range: '1 año', source: 'FoodSafety.gov: congelador.' }
+  },
+  {
+    category: 'meat',
+    food: 'Aves de corral frescas',
+    type: 'Pollo o pavo, trozos',
+    fridge: { days: 2, range: '1 a 2 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 270, range: '9 meses', source: 'FoodSafety.gov: congelador.' }
   },
   {
     category: 'fish',
     food: 'Peces de aleta',
-    type: 'Pescados grasos o magros frescos',
+    type: 'Pescados grasos: pez azul, bagre, caballa, mújol, salmón, atún',
     fridge: { days: 3, range: '1 a 3 días', source: 'FoodSafety.gov: refrigerador.' },
-    freezer: { days: 60, range: '2 a 8 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+    freezer: { days: 60, range: '2 a 3 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'fish',
+    food: 'Peces de aleta',
+    type: 'Pescados magros: bacalao, platija, eglefino, fletán, lenguado',
+    fridge: { days: 3, range: '1 a 3 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 180, range: '6 a 8 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'fish',
+    food: 'Peces de aleta',
+    type: 'Pescados magros: abadejo, perca marina, pez roca, trucha marina',
+    fridge: { days: 3, range: '1 a 3 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 120, range: '4 a 8 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
   },
   {
     category: 'fish',
@@ -110,8 +229,36 @@ const FOOD_STORAGE_OPTIONS: FoodStorageOption[] = [
   {
     category: 'fish',
     food: 'Mariscos',
+    type: 'Cangrejo vivo o langosta viva',
+    fridge: { days: 1, range: '1 día', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 1, range: 'No recomendado', source: 'FoodSafety.gov: congelador no recomendado.' }
+  },
+  {
+    category: 'fish',
+    food: 'Mariscos',
+    type: 'Almejas, mejillones, ostras y vieiras vivas',
+    fridge: { days: 10, range: '5 a 10 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 1, range: 'No recomendado', source: 'FoodSafety.gov: congelador no recomendado.' }
+  },
+  {
+    category: 'fish',
+    food: 'Mariscos',
     type: 'Camarones o cangrejos de río',
     fridge: { days: 5, range: '3 a 5 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 180, range: '6 a 18 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'fish',
+    food: 'Mariscos',
+    type: 'Almejas, mejillones, ostras y vieiras sin concha',
+    fridge: { days: 10, range: '3 a 10 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 90, range: '3 a 4 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'fish',
+    food: 'Mariscos',
+    type: 'Calamar',
+    fridge: { days: 3, range: '1 a 3 días', source: 'FoodSafety.gov: refrigerador.' },
     freezer: { days: 180, range: '6 a 18 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
   },
   {
@@ -124,9 +271,93 @@ const FOOD_STORAGE_OPTIONS: FoodStorageOption[] = [
   {
     category: 'dairy',
     food: 'Huevos',
+    type: 'Claras y yemas de huevo crudas',
+    fridge: { days: 4, range: '2 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 365, range: '12 meses', source: 'FoodSafety.gov: congelador.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Huevo crudo congelado accidentalmente en la cáscara',
+    fridge: { days: 1, range: 'Utilizar inmediatamente después de descongelar', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 1, range: 'Mantener congelado y luego refrigerar para descongelar', source: 'FoodSafety.gov: congelador.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
     type: 'Huevos duros',
     fridge: { days: 7, range: '1 semana', source: 'FoodSafety.gov: refrigerador.' },
     freezer: { days: 1, range: 'No congelar', source: 'FoodSafety.gov: congelador no recomendado.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Sustitutos de huevo líquidos, sin abrir',
+    fridge: { days: 7, range: '1 semana', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 1, range: 'No congelar', source: 'FoodSafety.gov: congelador no recomendado.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Sustitutos de huevo líquidos, abiertos',
+    fridge: { days: 3, range: '3 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 1, range: 'No congelar', source: 'FoodSafety.gov: congelador no recomendado.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Sustitutos de huevo congelados, sin abrir',
+    fridge: { days: 7, range: 'Después de descongelar, 1 semana o fecha de caducidad', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 365, range: '12 meses', source: 'FoodSafety.gov: congelador.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Sustitutos de huevo congelados, abiertos',
+    fridge: { days: 4, range: 'Después de descongelar, 3 a 4 días o fecha de caducidad', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 1, range: 'No congelar', source: 'FoodSafety.gov: congelador no recomendado.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Guisos con huevos',
+    fridge: { days: 4, range: 'Después de hornear, 3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 60, range: 'Después de hornear, 2 a 3 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Ponche de huevo, comercial',
+    fridge: { days: 5, range: '3 a 5 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 180, range: '6 meses', source: 'FoodSafety.gov: congelador.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Ponche de huevo casero',
+    fridge: { days: 4, range: '2 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 1, range: 'No congelar', source: 'FoodSafety.gov: congelador no recomendado.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Tartas de calabaza o nueces pecanas',
+    fridge: { days: 4, range: 'Después de hornear, 3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: 'Después de hornear, 1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Tartas de crema pastelera y chiffon',
+    fridge: { days: 4, range: 'Después de hornear, 3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 1, range: 'No congelar', source: 'FoodSafety.gov: congelador no recomendado.' }
+  },
+  {
+    category: 'dairy',
+    food: 'Huevos',
+    type: 'Quiche con relleno',
+    fridge: { days: 5, range: 'Después de hornear, 3 a 5 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 60, range: 'Después de hornear, 2 a 3 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
   },
   {
     category: 'leftovers',
@@ -145,37 +376,16 @@ const FOOD_STORAGE_OPTIONS: FoodStorageOption[] = [
   {
     category: 'leftovers',
     food: 'Sobras',
-    type: 'Nuggets, hamburguesas de pollo o pizza',
+    type: 'Nuggets o hamburguesas de pollo',
     fridge: { days: 4, range: '3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
     freezer: { days: 30, range: '1 a 3 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
   },
   {
-    category: 'vegetable',
-    food: 'Vegetales / Hortalizas',
-    type: 'Frescos',
-    fridge: { days: 7, range: '7 días', source: 'Estimación preventiva local; el PDF no incluye esta categoría general.' },
-    freezer: { days: 240, range: '8 meses', source: 'Estimación preventiva local para congelador.' }
-  },
-  {
-    category: 'fruit',
-    food: 'Frutas frescas',
-    type: 'Frescas',
-    fridge: { days: 7, range: '7 días', source: 'Estimación preventiva local; el PDF no incluye esta categoría general.' },
-    freezer: { days: 240, range: '8 meses', source: 'Estimación preventiva local para congelador.' }
-  },
-  {
-    category: 'grain',
-    food: 'Granos y cereales',
-    type: 'Secos o cocidos',
-    fridge: { days: 14, range: '14 días', source: 'Estimación preventiva local; el PDF no incluye esta categoría general.' },
-    freezer: { days: 90, range: '3 meses', source: 'Estimación preventiva local para congelador.' }
-  },
-  {
-    category: 'other',
-    food: 'Otros / Condimentos',
-    type: 'Preparados o abiertos',
-    fridge: { days: 5, range: '3 a 5 días', source: 'FoodSafety.gov: referencia preventiva de alimentos preparados.' },
-    freezer: { days: 60, range: '1 a 2 meses', source: 'FoodSafety.gov: referencia preventiva de alimentos preparados.' }
+    category: 'leftovers',
+    food: 'Sobras',
+    type: 'Pizza',
+    fridge: { days: 4, range: '3 a 4 días', source: 'FoodSafety.gov: refrigerador.' },
+    freezer: { days: 30, range: '1 a 2 meses', source: 'FoodSafety.gov: congelador; se usa el extremo conservador.' }
   }
 ];
 
@@ -613,6 +823,7 @@ export default function InventoryManager({
   const typeOptions = getTypeOptions(category, selectedFood);
   const selectedStorageOption = getSelectedStorageOption(category, selectedFood, selectedType);
   const currentShelfLifeRecommendation = getShelfLifeRecommendation(category, location, selectedStorageOption);
+  const hasPdfFoodOptions = foodOptions.length > 0;
 
   return (
     <div className="space-y-8" id="inventory-manager-view">
@@ -758,11 +969,16 @@ export default function InventoryManager({
               <select
                 value={selectedFood}
                 onChange={(e) => handleFoodChange(e.target.value)}
+                disabled={!hasPdfFoodOptions}
                 className="w-full text-sm px-3.5 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white"
               >
-                {foodOptions.map((food) => (
-                  <option key={food} value={food}>{food}</option>
-                ))}
+                {hasPdfFoodOptions ? (
+                  foodOptions.map((food) => (
+                    <option key={food} value={food}>{food}</option>
+                  ))
+                ) : (
+                  <option value="">Sin alimentos en el PDF para esta categoría</option>
+                )}
               </select>
             </div>
 
@@ -772,11 +988,16 @@ export default function InventoryManager({
               <select
                 value={selectedType}
                 onChange={(e) => handleTypeChange(e.target.value)}
+                disabled={!hasPdfFoodOptions || typeOptions.length === 0}
                 className="w-full text-sm px-3.5 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white"
               >
-                {typeOptions.map((option) => (
-                  <option key={`${option.food}-${option.type}`} value={option.type}>{option.type}</option>
-                ))}
+                {typeOptions.length > 0 ? (
+                  typeOptions.map((option) => (
+                    <option key={`${option.food}-${option.type}`} value={option.type}>{option.type}</option>
+                  ))
+                ) : (
+                  <option value="">Sin tipos en el PDF para esta categoría</option>
+                )}
               </select>
             </div>
 
