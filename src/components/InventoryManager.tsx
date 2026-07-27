@@ -511,14 +511,14 @@ export default function InventoryManager({
                 onChange={(e) => handleCategoryChange(e.target.value as FoodItem['category'])}
                 className="w-full text-sm px-3.5 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white"
               >
-                <option value="leftovers">Preparados y Sobras (PDF)</option>
-                <option value="meat">Carnes, Embutidos, Jamón y Aves (PDF)</option>
-                <option value="fish">Pescados y Mariscos (PDF)</option>
-                <option value="dairy">Huevos y Preparaciones con Huevo (PDF)</option>
-                <option value="vegetable">Vegetales / Hortalizas (sin filas en PDF)</option>
-                <option value="fruit">Frutas frescas (sin filas en PDF)</option>
-                <option value="grain">Granos y Cereales (sin filas en PDF)</option>
-                <option value="other">Otros / Condimentos (sin filas en PDF)</option>
+                <option value="leftovers">Preparados y Sobras</option>
+                <option value="meat">Carnes, Embutidos, Jamón y Aves</option>
+                <option value="fish">Pescados y Mariscos</option>
+                <option value="dairy">Huevos y Preparaciones con Huevo</option>
+                <option value="vegetable">Vegetales / Hortalizas</option>
+                <option value="fruit">Frutas frescas</option>
+                <option value="grain">Granos y Cereales</option>
+                <option value="other">Otros / Condimentos</option>
               </select>
             </div>
 
