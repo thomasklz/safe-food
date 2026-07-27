@@ -22,6 +22,59 @@ interface InventoryManagerProps {
   setActivityLogs: React.Dispatch<React.SetStateAction<ActivityLog[]>>;
 }
 
+const CATEGORY_SHELF_LIFE: Record<FoodItem['category'], {
+  days: number;
+  range: string;
+  source: string;
+}> = {
+  meat: {
+    days: 2,
+    range: '1 a 2 días',
+    source: 'FoodSafety.gov: aves frescas, salchicha cruda, carne molida y mezclas crudas.'
+  },
+  fish: {
+    days: 3,
+    range: '1 a 3 días',
+    source: 'FoodSafety.gov: peces de aleta frescos.'
+  },
+  leftovers: {
+    days: 4,
+    range: '3 a 4 días',
+    source: 'FoodSafety.gov: sobras, carne o aves cocidas, sopas y guisos.'
+  },
+  dairy: {
+    days: 7,
+    range: '1 semana',
+    source: 'Referencia preventiva: el PDF incluye huevos; para lacteos se conserva el criterio local de 1 semana.'
+  },
+  vegetable: {
+    days: 7,
+    range: '7 días',
+    source: 'Estimación preventiva local; el PDF no incluye frutas y vegetales frescos como categoría general.'
+  },
+  fruit: {
+    days: 7,
+    range: '7 días',
+    source: 'Estimación preventiva local; el PDF no incluye frutas y vegetales frescos como categoría general.'
+  },
+  grain: {
+    days: 14,
+    range: '14 días',
+    source: 'Estimación preventiva local; el PDF no incluye granos y cereales como categoría refrigerada general.'
+  },
+  other: {
+    days: 5,
+    range: '3 a 5 días',
+    source: 'FoodSafety.gov: referencia preventiva basada en ensaladas, jamón en rodajas y alimentos preparados.'
+  }
+};
+
+function getExpiryDateFromShelfLife(storageDate: string, days: number) {
+  const base = new Date(storageDate);
+  base.setDate(base.getDate() + days);
+  return base.toISOString().split('T')[0];
+}
+
 export default function InventoryManager({
   items,
   setItems,
@@ -55,36 +108,11 @@ export default function InventoryManager({
   // Auto-estimate expiration based on category
   const handleCategoryChange = (cat: FoodItem['category']) => {
     setCategory(cat);
-    let offsetDays = 5; // Default
-
-    switch (cat) {
-      case 'fish':
-        offsetDays = 2;
-        break;
-      case 'meat':
-        offsetDays = 2;
-        break;
-      case 'dairy':
-        offsetDays = 5;
-        break;
-      case 'leftovers':
-        offsetDays = 3;
-        break;
-      case 'vegetable':
-      case 'fruit':
-        offsetDays = 7;
-        break;
-      case 'grain':
-      case 'other':
-        offsetDays = 14;
-        break;
-    }
+    const offsetDays = CATEGORY_SHELF_LIFE[cat].days;
 
     setPerecidad(offsetDays);
     try {
-      const today = new Date(storageDate);
-      today.setDate(today.getDate() + offsetDays);
-      setExpiryDate(today.toISOString().split('T')[0]);
+      setExpiryDate(getExpiryDateFromShelfLife(storageDate, offsetDays));
     } catch (e) {
       console.error(e);
     }
@@ -441,6 +469,9 @@ export default function InventoryManager({
               </div>
               <p className="text-[10px] text-stone-400 italic">
                 {perecidad <= 2 ? '⚠️ Perecedero rápido (Carnes/Pescado)' : perecidad <= 5 ? '🕒 Durabilidad media (Sobras/Lácteos)' : '🌱 Durabilidad alta (Verduras/Granos)'}
+              </p>
+              <p className="text-[10px] text-stone-500 leading-snug">
+                Referencia: {CATEGORY_SHELF_LIFE[category].range}. {CATEGORY_SHELF_LIFE[category].source}
               </p>
             </div>
 
