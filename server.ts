@@ -6,10 +6,8 @@
 import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
-import { GoogleGenAI, Type } from '@google/genai';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { Type } from '@google/genai';
+import { createGeminiClient, generateWithFallback } from './api/gemini';
 
 const app = express();
 app.use(express.json());
@@ -17,39 +15,18 @@ app.use(express.json());
 const PORT = 3000;
 
 // Lazy initialization of Gemini client to prevent startup failures if key is missing
-let aiClient: GoogleGenAI | null = null;
+let aiClient: ReturnType<typeof createGeminiClient> = null;
 
-function getGeminiClient(): GoogleGenAI | null {
+function getGeminiClient() {
   if (!aiClient) {
     const key = process.env.GEMINI_API_KEY;
     if (!key) {
       console.warn('Advertencia: GEMINI_API_KEY no se encuentra definida en las variables de entorno.');
       return null;
     }
-    aiClient = new GoogleGenAI({
-      apiKey: key,
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build',
-        },
-      },
-    });
+    aiClient = createGeminiClient(key);
   }
   return aiClient;
-}
-
-async function generateWithFallback(ai: GoogleGenAI, config: any) {
-  const models = ['gemini-2.5-flash', 'gemini-1.5-flash'];
-  let lastErr: any = null;
-  for (const model of models) {
-    try {
-      return await ai.models.generateContent({ ...config, model });
-    } catch (err: any) {
-      console.warn(`Model ${model} failed in server.ts, trying next fallback:`, err.message || err);
-      lastErr = err;
-    }
-  }
-  throw lastErr;
 }
 
 // ---------------- API ENDPOINTS -----------------

@@ -1,18 +1,5 @@
 import { GoogleGenAI, Type } from '@google/genai';
-
-async function generateWithFallback(ai: GoogleGenAI, config: any) {
-  const models = ['gemini-2.5-flash', 'gemini-1.5-flash'];
-  let lastErr: any = null;
-  for (const model of models) {
-    try {
-      return await ai.models.generateContent({ ...config, model });
-    } catch (err: any) {
-      console.warn(`Model ${model} failed, trying next fallback:`, err.message || err);
-      lastErr = err;
-    }
-  }
-  throw lastErr;
-}
+import { createGeminiClient, generateWithFallback } from './gemini';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
@@ -30,7 +17,7 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = createGeminiClient(apiKey) as GoogleGenAI;
     const prompt = `Imagina que eres un chef experto certificado en inocuidad alimentaria. El usuario quiere preparar un menú nutritivo y seguro utilizando prioritariamente estos ingredientes próximos a vencer: ${ingredients.join(', ')}.
 Además tiene disponible en su despensa: ${pantryItems ? pantryItems.join(', ') : 'ingredientes básicos de cocina'}.
 

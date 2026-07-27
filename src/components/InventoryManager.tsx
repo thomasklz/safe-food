@@ -499,7 +499,7 @@ export default function InventoryManager({
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex gap-3">
           <ServerCrash className="h-6 w-6 text-amber-600 shrink-0" />
           <div>
-            <h4 className="font-bold text-amber-800 text-sm">Modo Demostración Activo</h4>
+            <h4 className="font-bold text-amber-800 text-sm">IA temporalmente no disponible</h4>
             <p className="text-xs text-amber-700 leading-relaxed mt-1">
               {analysisError} El monitoreo digital preventivo local sigue activo calculando los tiempos de caducidad en tiempo real.
             </p>

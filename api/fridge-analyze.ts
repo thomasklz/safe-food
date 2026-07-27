@@ -1,18 +1,5 @@
 import { GoogleGenAI, Type } from '@google/genai';
-
-async function generateWithFallback(ai: GoogleGenAI, config: any) {
-  const models = ['gemini-2.5-flash', 'gemini-1.5-flash'];
-  let lastErr: any = null;
-  for (const model of models) {
-    try {
-      return await ai.models.generateContent({ ...config, model });
-    } catch (err: any) {
-      console.warn(`Model ${model} failed, trying next fallback:`, err.message || err);
-      lastErr = err;
-    }
-  }
-  throw lastErr;
-}
+import { createGeminiClient, generateWithFallback } from './gemini';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
@@ -30,7 +17,7 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = createGeminiClient(apiKey) as GoogleGenAI;
     const itemsDescription = items.map((item: any) => 
       `- ${item.name} (${item.category}): Almacenado el ${item.storageDate}, vence el ${item.expiryDate}. Ubicado en ${item.storageLocation}. Notas: ${item.notes || 'Ninguna'}`
     ).join('\n');
