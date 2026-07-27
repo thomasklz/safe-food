@@ -1,10 +1,12 @@
 const GEMINI_MODELS = [
   ...(process.env.GEMINI_MODEL || '').split(','),
-  'gemini-2.0-flash',
-  'gemini-2.5-flash',
+  'gemini-3.6-flash',
+  'gemini-3.5-flash',
+  'gemini-3.5-flash-lite',
+  'gemini-flash-latest',
 ]
   .map((model) => model.trim())
-  .filter((model) => model && !model.startsWith('gemini-1.5'))
+  .filter((model) => model && !model.startsWith('gemini-1.5') && !model.startsWith('gemini-2.'))
   .filter((model, index, models) => models.indexOf(model) === index);
 
 function getGeminiText(data: any) {
@@ -34,7 +36,6 @@ async function generateJsonWithGemini(apiKey: string, prompt: string) {
             contents: [{ role: 'user', parts: [{ text: prompt }] }],
             generationConfig: {
               responseMimeType: 'application/json',
-              temperature: 0.2,
               maxOutputTokens: 900,
             },
           }),

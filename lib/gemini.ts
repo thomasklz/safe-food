@@ -4,10 +4,16 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
-export const GEMINI_MODELS = (process.env.GEMINI_MODEL || 'gemini-2.5-flash,gemini-2.0-flash')
-  .split(',')
+export const GEMINI_MODELS = [
+  ...(process.env.GEMINI_MODEL || '').split(','),
+  'gemini-3.6-flash',
+  'gemini-3.5-flash',
+  'gemini-3.5-flash-lite',
+  'gemini-flash-latest',
+]
   .map((model) => model.trim())
-  .filter(Boolean);
+  .filter((model) => model && !model.startsWith('gemini-1.5') && !model.startsWith('gemini-2.'))
+  .filter((model, index, models) => models.indexOf(model) === index);
 
 export function createGeminiClient(apiKey = process.env.GEMINI_API_KEY) {
   if (!apiKey) return null;
