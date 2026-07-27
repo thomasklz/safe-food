@@ -38,6 +38,20 @@ function getGeminiClient(): GoogleGenAI | null {
   return aiClient;
 }
 
+async function generateWithFallback(ai: GoogleGenAI, config: any) {
+  const models = ['gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash'];
+  let lastErr: any = null;
+  for (const model of models) {
+    try {
+      return await ai.models.generateContent({ ...config, model });
+    } catch (err: any) {
+      console.warn(`Model ${model} failed in server.ts, trying next fallback:`, err.message || err);
+      lastErr = err;
+    }
+  }
+  throw lastErr;
+}
+
 // ---------------- API ENDPOINTS -----------------
 
 const apiRouter = express.Router();
@@ -72,8 +86,7 @@ apiRouter.post('/chat', async (req, res) => {
       parts: [{ text: msg.text }]
     }));
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+    const response = await generateWithFallback(ai, {
       contents: formattedContents,
       config: {
         systemInstruction: `Eres "SafeFood IA", un tutor y asistente científico interactivo de primer nivel experto en Inocuidad Alimentaria (Food Safety) y Nutrición Familiar Doméstica.
@@ -117,8 +130,7 @@ Por favor, genera una receta segura, balanceada y deliciosa estructurada en form
 En la sección "safetyPrecautions", incluye al menos 3 medidas de inocuidad específicas relacionadas con estos ingredientes (por ejemplo, temperaturas internas de cocción, desinfección previa o riesgos de contaminación cruzada según el tipo de alimento como carne, pescado, lácteos, etc.).
 En "nutritionalBenefits", detalla qué nutrientes aporta la receta al cuerpo de forma clara.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+    const response = await generateWithFallback(ai, {
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
@@ -145,7 +157,7 @@ En "nutritionalBenefits", detalla qué nutrientes aporta la receta al cuerpo de 
             safetyPrecautions: {
               type: Type.ARRAY,
               items: { type: Type.STRING },
-              description: 'Precauciones sanitarias estrictas durante la preparación de este plato (temperatura interna, utensilios, desinfección, etc.)'
+              description: 'Precauciones sanitarias estrictas durante la preparación de este plato (temperatura interna, utensils, desinfección, etc.)'
             },
             nutritionalBenefits: {
               type: Type.STRING,
@@ -187,8 +199,7 @@ ${itemsDescription}
 
 Brinda un veredicto de inocuidad en formato JSON estricto. Determina cuál es el alimento con mayor prioridad de consumo o riesgo inminente de contaminación/enfermedad transmitida por alimentos (como Salmonella, Listeria monocytogenes, o toxinas fúngicas), explica de manera científica pero entendible el riesgo biológico asociado, y provee 3 recomendaciones inmediatas para el hogar.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+    const response = await generateWithFallback(ai, {
       contents: prompt,
       config: {
         responseMimeType: 'application/json',
