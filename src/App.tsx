@@ -355,7 +355,7 @@ export default function App() {
                 </span>
               </div>
               <h2 className="text-2xl font-black text-stone-850 tracking-tight">
-                Plataformas Científica de Inocuidad & Nutrición
+                Plataforma Científica de Inocuidad & Nutrición
               </h2>
               <p className="text-sm text-stone-600 leading-relaxed max-w-2xl">
                 Combate el desperdicio alimentario, asegura la cadena de frío de tus proteínas y planea un menú nutricional saludable con soporte de IA.
