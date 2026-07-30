@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
-import { ShieldCheck, Snowflake, ChefHat, MessageSquareCode, BarChart3, ThermometerSun, BookOpen, SearchCheck, HelpCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { ShieldCheck, Snowflake, ChefHat, MessageSquareCode, BarChart3, ThermometerSun, BookOpen, SearchCheck, HelpCircle, QrCode, X } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: string;
@@ -14,6 +14,8 @@ interface NavbarProps {
 }
 
 export default function Navbar({ activeTab, setActiveTab, isColdChainOk, hasApiKey }: NavbarProps) {
+  const [showQrModal, setShowQrModal] = useState(false);
+
   const navItems = [
     { id: 'inventory', label: 'Nevera Inteligente', icon: Snowflake },
     { id: 'safety_lookup', label: 'Consulta por Alimento', icon: SearchCheck },
@@ -63,6 +65,16 @@ export default function Navbar({ activeTab, setActiveTab, isColdChainOk, hasApiK
             }`}>
               {hasApiKey ? 'Gemini IA: Activo' : 'Gemini IA: Modo Demo'}
             </div>
+
+            <button
+              type="button"
+              onClick={() => setShowQrModal(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-stone-900 text-white hover:bg-stone-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+              aria-label="Mostrar código QR de SafeFood IA"
+            >
+              <QrCode className="h-3.5 w-3.5" />
+              QR
+            </button>
           </div>
         </div>
 
@@ -89,6 +101,48 @@ export default function Navbar({ activeTab, setActiveTab, isColdChainOk, hasApiK
           })}
         </div>
       </div>
+
+      {showQrModal && (
+        <div
+          className="fixed inset-0 z-[80] bg-stone-950/60 backdrop-blur-sm flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="qr-modal-title"
+          onClick={() => setShowQrModal(false)}
+        >
+          <div
+            className="bg-white rounded-2xl border border-stone-200 shadow-2xl w-full max-w-sm p-5 space-y-4"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h2 id="qr-modal-title" className="text-lg font-extrabold text-stone-900">
+                  Código QR SafeFood IA
+                </h2>
+                <p className="text-xs text-stone-500 mt-0.5">
+                  Escanéalo para abrir la aplicación desplegada.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowQrModal(false)}
+                className="h-9 w-9 rounded-lg border border-stone-200 text-stone-500 hover:text-stone-900 hover:bg-stone-50 flex items-center justify-center transition-colors"
+                aria-label="Cerrar código QR"
+              >
+                <X className="h-4.5 w-4.5" />
+              </button>
+            </div>
+
+            <div className="bg-white border border-stone-100 rounded-xl p-4 flex items-center justify-center">
+              <img
+                src="/qrcode_safe-food-vercel-app.png"
+                alt="Código QR para abrir SafeFood IA"
+                className="w-full max-w-[260px] aspect-square object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
